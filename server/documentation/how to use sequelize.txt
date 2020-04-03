@@ -1,0 +1,24 @@
+npm install sequelize
+npm install sequelize-cli
+npx sequelize init
+npm install mysql2
+
+//create MODEL
+npx sequelize-cli model:generate --name book --attributes title:string, id_type:string, id_author:string, date:dateonly, pages:integer 
+npx sequelize-cli model:generate --name author --attributes name:string
+npx sequelize-cli model:generate --name type --attributes name:string
+
+//run the migration
+npx sequelize db:migrate
+
+//undo migration
+npx sequelize db:migrate:undo:all
+
+//create data seed on book, author, and type
+npx sequelize-cli seed:generate --name demo-book
+npx sequelize-cli seed:generate --name demo-author
+npx sequelize-cli seed:generate --name demo-type
+
+//run the seeder
+npx sequelize db:seed:all
+
