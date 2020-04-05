@@ -4,58 +4,118 @@ import { connect } from "react-redux";
 import { get_books } from "./_action/books";
 import moment from "moment";
 import "bootstrap/dist/css/bootstrap.min.css";
+import MDelete from "./component/delete";
+import MUpdate from "./component/update";
+import MDetail from "./component/detail";
+import MCreate from "./component/create";
+import {
+  Form,
+  FormControl,
+  Button,
+  Navbar,
+  Table,
+  Row,
+  Col,
+  Nav,
+  Spinner
+} from "react-bootstrap";
 class App extends Component {
   componentDidMount() {
     this.props.get_books();
   }
   render() {
     const { data, loading } = this.props.books;
-    if (loading) return <>Now Loading...</>;
+    if (loading)
+      return (
+        <>
+          <Button variant="primary" disabled>
+            <Spinner
+              as="span"
+              animation="grow"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+            />
+            Loading...
+          </Button>
+        </>
+      );
     return (
       <div className="App">
-        <header className="App-header">
-          <div>
-            <img
-              alt=""
-              src="/book.svg"
-              width="30"
-              height="30"
-              className="d-inline-block align-top"
-            />
-          </div>
-          <div style={{ paddingLeft: 15 }}>Books</div>
-        </header>
+        <Navbar bg="dark" expand="lg">
+          <Navbar.Brand href="#home">
+            <img alt="" src="/book.svg" width="30" height="30" />
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="mr-auto">
+              <MCreate />
+            </Nav>
+            <Form inline>
+              <FormControl
+                type="text"
+                placeholder="Search Books"
+                className="mr-sm-2"
+              />
+              <Button variant="outline-info">Search</Button>
+            </Form>
+          </Navbar.Collapse>
+        </Navbar>
 
-        <table className="Table">
+        <Table striped bordered hover responsive="sm">
           <thead>
             <tr>
               <th>Title</th>
               <th>Author</th>
-              <th>Date Published</th>
-              <th>Number of Pages</th>
               <th>Type of Books</th>
               <th>Action</th>
             </tr>
           </thead>
-
           <tbody>
-            {data.map((item, index) => (
-              <tr key={index}>
-                <td>{item.title}</td>
-                <td>{item.author.name}</td>
-                <td>{moment(item.date_published).format("MMMM Do YYYY")}</td>
-                <td>{item.pages}</td>
-                <td>{item.type.name}</td>
-                <td>
-                  <button className="btn-update">Update</button>
-                  <button className="btn-delete">Delete</button>
-                </td>
-              </tr>
-            ))}
+            {data &&
+              data.map((item, index) => (
+                <tr key={index}>
+                  <td style={{ textAlign: "center" }}>{item.title}</td>
+                  <td style={{ textAlign: "center" }}>
+                    {item.author && item.author.name}
+                  </td>
+                  <td style={{ textAlign: "center" }}>
+                    {item.type && item.type.name}
+                  </td>
+                  <td style={{ textAlign: "center" }}>
+                    <Row>
+                      <Col>
+                        <MUpdate
+                          title={item.title}
+                          id_type={item.id_type}
+                          id_author={item.id_author}
+                          date={item.date_published}
+                          pages={item.pages}
+                          type={item.type && item.type.name}
+                        />
+                      </Col>
+                      <Col>
+                        <MDetail
+                          title={item.title}
+                          author={item.author && item.author.name}
+                          date={moment(item.date_published).format(
+                            "DD MMMM YYYY"
+                          )}
+                          pages={item.pages}
+                          type={item.type && item.type.name}
+                        />
+                      </Col>
+                      <Col>
+                        <MDelete id={item.id} />
+                      </Col>
+                    </Row>
+                  </td>
+                </tr>
+              ))}
           </tbody>
-        </table>
+        </Table>
 
-        <footer className="footer">
+        {/* <footer className="footer">
           <p>
             <a
               href="https://github.com/cosmoas13"
@@ -65,7 +125,7 @@ class App extends Component {
               &copy; Cosmoas13
             </a>
           </p>
-        </footer>
+        </footer> */}
       </div>
     );
   }

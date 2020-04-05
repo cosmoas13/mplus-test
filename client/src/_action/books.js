@@ -17,13 +17,14 @@ export const get_books = () => {
   };
 };
 
-export const post_book = data => {
+export const post_book = value => {
+  console.log(value, "data");
   return {
     type: POST_BOOK,
     payload: async () => {
-      const res = await API.post("/store", data);
-      const { book } = res.data;
-      return book;
+      const res = await API.post("/store", value);
+      const { data } = res.data;
+      return data;
     }
   };
 };

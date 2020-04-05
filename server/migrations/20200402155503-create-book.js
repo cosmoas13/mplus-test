@@ -19,7 +19,7 @@ module.exports = {
       },
       date_published: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
       },
       pages: {
         type: Sequelize.INTEGER
