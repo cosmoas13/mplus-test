@@ -37,6 +37,7 @@ class Create extends Component {
       date_published: this.state.date_published,
       pages: this.state.pages
     };
+
     this.props.post_book(data);
   };
 

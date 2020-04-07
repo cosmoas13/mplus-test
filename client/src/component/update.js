@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "../App.css";
 import { connect } from "react-redux";
-import { post_book } from "../_action/books";
+import { update_book } from "../_action/books";
 import { get_type } from "../_action/type";
 import { get_author } from "../_action/author";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -37,7 +37,11 @@ class Update extends Component {
       date_published: this.state.date_published,
       pages: this.state.pages
     };
-    this.props.post_book(data);
+    const id = this.props.id;
+    if (data !== null) {
+      this.props.update_book(data, id);
+    }
+    // window.location.reload(false);
   };
 
   handleChange = e => {
@@ -85,7 +89,7 @@ class Update extends Component {
                     onChange={this.handleChange}
                     as="select"
                     name="id_type"
-                    value={this.props.id_type}
+                    defaultValue={this.props.id_type}
                   >
                     {ty.map((item, index) => (
                       <option key={index} value={item.id}>
@@ -102,7 +106,7 @@ class Update extends Component {
                   onChange={this.handleChange}
                   as="select"
                   name="id_author"
-                  value={this.props.id_author}
+                  defaultValue={this.props.id_author}
                 >
                   {au.map((item, index) => (
                     <option key={index} value={item.id}>
@@ -158,7 +162,7 @@ const MapsToProps = state => {
 
 const MapsDispacthToProps = dispacth => {
   return {
-    post_book: data => dispacth(post_book(data)),
+    update_book: (data, id) => dispacth(update_book(data, id)),
     get_type: () => dispacth(get_type()),
     get_author: () => dispacth(get_author())
   };

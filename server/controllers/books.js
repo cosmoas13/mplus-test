@@ -76,11 +76,24 @@ exports.update = async (req, res) => {
         date_published,
         pages
       });
-      res.status(201).send({
-        status: true,
-        message: "book has been update",
-        data: data
+      const datax = await Books.findAll({
+        include: [
+          {
+            model: Authors,
+            as: "author",
+            attributes: ["id", "name"]
+          },
+          {
+            model: Types,
+            as: "type",
+            attributes: ["id", "name"]
+          }
+        ],
+        attributes: {
+          exclude: ["createdAt", "updatedAt"]
+        }
       });
+      res.status(200).send({ status: true, message: "success", data: datax });
     } else {
       res.status(400).json({
         status: "failed",
@@ -97,7 +110,23 @@ exports.destroy = async (req, res) => {
   const id = req.params.id;
   try {
     await Books.destroy({ where: { id } });
-    const data = await Books.findAll({});
+    const data = await Books.findAll({
+      include: [
+        {
+          model: Authors,
+          as: "author",
+          attributes: ["id", "name"]
+        },
+        {
+          model: Types,
+          as: "type",
+          attributes: ["id", "name"]
+        }
+      ],
+      attributes: {
+        exclude: ["createdAt", "updatedAt"]
+      }
+    });
     res.status(200).send({ status: true, message: "delete success", data, id });
   } catch (err) {
     console.log(err);

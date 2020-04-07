@@ -86,6 +86,7 @@ class App extends Component {
                     <Row>
                       <Col>
                         <MUpdate
+                          id={item.id}
                           title={item.title}
                           id_type={item.id_type}
                           id_author={item.id_author}

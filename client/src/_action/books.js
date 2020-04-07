@@ -29,13 +29,14 @@ export const post_book = value => {
   };
 };
 
-export const update_book = (data, id) => {
+export const update_book = (value, id) => {
+  console.log(value, "data");
   return {
     type: UPDATE_BOOK,
     payload: async () => {
-      const res = await API.put(`/update/${id}`, data);
-      const { book } = res.data;
-      return book;
+      const res = await API.patch(`/update/${id}`, value);
+      const { data } = res.data;
+      return data;
     }
   };
 };
