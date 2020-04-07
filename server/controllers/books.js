@@ -1,7 +1,49 @@
 const models = require("../models");
+const { Op } = require("sequelize");
 const Authors = models.author;
 const Books = models.book;
 const Types = models.type;
+
+exports.search = async (req, res) => {
+  const { search } = req.query;
+  try {
+    const f = await Books.findOne({
+      where: { title: { [Op.like]: `${search}` } }
+    });
+    if (!f) {
+      throw "204";
+    }
+    const fx = f.id;
+    console.log(f);
+
+    const data = await Books.findAll({
+      where: {
+        title: { [Op.like]: `%${fx}` }
+        // title: { [Op.like]: `${search}` }
+        // where: { name: { [Op.like]: `${from}` } }
+      },
+      order: [["id", "DESC"]],
+      include: [
+        {
+          model: Authors,
+          as: "author",
+          attributes: ["id", "name"]
+        },
+        {
+          model: Types,
+          as: "type",
+          attributes: ["id", "name"]
+        }
+      ],
+      attributes: {
+        exclude: ["createdAt", "updatedAt"]
+      }
+    });
+    res.status(200).send({ status: true, message: "success", data });
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 exports.index = async (req, res) => {
   try {

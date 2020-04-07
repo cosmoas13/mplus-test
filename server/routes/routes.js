@@ -17,5 +17,7 @@ router.get("/author", BooksController.author);
 router.patch("/update/:id", BooksController.update);
 //delete
 router.delete("/destroy/:id", BooksController.destroy);
+//search
+router.get("/search", BooksController.search);
 
 module.exports = router;
