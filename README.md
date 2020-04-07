@@ -32,7 +32,7 @@ Make sure all of these are properly installed in your system.
 First, clone this repository into your system.
 
 ```
-git clone https://github.com/cosmoas13/TiketTiket_DW14LQEMW.git
+git clone https://github.com/cosmoas13/mplus-test.git
 ```
 
 Then, install all the packages that described in `package.json` of both `client` and `server` directories.
