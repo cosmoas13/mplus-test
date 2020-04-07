@@ -1,6 +1,5 @@
-# TiketTiket
+# Mplus Test
 
-Tiket Tiket is an application that provides train tickets booking service
 ## Table of Contents
 
 - [Getting Started](#getting-started)
